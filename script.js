@@ -60,11 +60,20 @@ const scenarios = {
 };
 
 const chartConfig = {
-  width: 760,
-  height: 420,
-  padding: { top: 24, right: 26, bottom: 46, left: 80 },
-  yTicks: 5,
-  xTicks: 6,
+  desktop: {
+    width: 760,
+    height: 420,
+    padding: { top: 24, right: 26, bottom: 46, left: 80 },
+    yTicks: 5,
+    xTicks: 6,
+  },
+  mobile: {
+    width: 430,
+    height: 320,
+    padding: { top: 20, right: 14, bottom: 42, left: 58 },
+    yTicks: 4,
+    xTicks: 4,
+  },
 };
 
 const comparisonSeries = [
@@ -237,9 +246,14 @@ function clearChart() {
 function renderChart(seriesResults, totalYears) {
   clearChart();
 
-  const { width, height, padding, xTicks, yTicks } = chartConfig;
+  const isCompactViewport = window.innerWidth <= 640;
+  const config = isCompactViewport ? chartConfig.mobile : chartConfig.desktop;
+  const { width, height, padding, xTicks, yTicks } = config;
   const chartWidth = width - padding.left - padding.right;
   const chartHeight = height - padding.top - padding.bottom;
+
+  const svg = document.getElementById("comparisonChart");
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   const maxValue = Math.max(...seriesResults.flatMap((series) => series.monthlySeries.map((point) => point.balance)));
   const safeMaxValue = maxValue <= 0 ? 1 : maxValue;
 
@@ -298,8 +312,6 @@ function renderChart(seriesResults, totalYears) {
       height - padding.bottom
     )
   );
-
-  const isCompactViewport = window.innerWidth <= 640;
 
   seriesResults.forEach((series, index) => {
     const points = series.monthlySeries.map((point) => ({

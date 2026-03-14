@@ -751,11 +751,11 @@ tbody tr:last-child td {
   .comparison-chart {
     min-width: 0;
     width: 100%;
-    height: 260px;
+    height: 300px;
   }
 
   .chart-axis-label {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .chart-end-label {
@@ -850,7 +850,7 @@ tbody tr:last-child td {
 
   .comparison-chart {
     min-width: 0;
-    height: 240px;
+    height: 280px;
   }
 
   table {
