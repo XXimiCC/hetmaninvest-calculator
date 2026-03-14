@@ -475,8 +475,8 @@ select:focus {
   font-size: 13px;
   font-weight: 600;
   paint-order: stroke;
-  stroke: rgba(255, 255, 255, 0.92);
-  stroke-width: 4px;
+  stroke: rgba(255, 255, 255, 0.96);
+  stroke-width: 5px;
   stroke-linejoin: round;
 }
 
@@ -756,6 +756,11 @@ tbody tr:last-child td {
 
   .chart-axis-label {
     font-size: 12px;
+  }
+
+  .chart-end-label {
+    font-size: 11px;
+    stroke-width: 5.5px;
   }
 
   .chart-legend,
