@@ -133,6 +133,18 @@ function formatCompactCurrency(value) {
   }).format(value);
 }
 
+function formatAxisCurrency(value, compact = false) {
+  if (compact) {
+    return formatCompactCurrency(value);
+  }
+
+  if (value >= 1000) {
+    return `${Math.round(value).toLocaleString("ru-RU")} $`;
+  }
+
+  return `${Math.round(value)} $`;
+}
+
 function calculatePortfolio({
   initialAmount,
   monthlyContribution,
@@ -277,7 +289,7 @@ function renderChart(seriesResults, totalYears) {
       y: y + 4,
       class: "chart-axis-label chart-axis-label-y",
     });
-    label.textContent = formatCompactCurrency(value);
+    label.textContent = formatAxisCurrency(value, !isCompactViewport);
     outputs.chartAxes.appendChild(label);
   }
 
