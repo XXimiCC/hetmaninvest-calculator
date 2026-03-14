@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20260314-2">
 </head>
 <body>
   <div class="page-shell">
@@ -16,9 +16,9 @@
       <div class="brand-chip">HetmanInvest</div>
       <div class="hero-copy">
         <p class="eyebrow">Сложный процент без лишнего шума</p>
-        <h1>Посмотрите, как капитал растёт при регулярных инвестициях</h1>
+        <h1>Как растёт капитал при регулярных инвестициях</h1>
         <p class="hero-text">
-          Настройте стартовую сумму, ежемесячные пополнения и ожидаемую доходность, чтобы быстро оценить долгосрочный результат.
+          Настройте стартовую сумму, пополнения и ожидаемую доходность, чтобы быстро увидеть результат на длинном горизонте.
         </p>
       </div>
       <div class="hero-glow" aria-hidden="true"></div>
@@ -94,9 +94,82 @@
         </div>
 
         <div class="breakdown-card">
+          <div class="comparison-hero">
+            <div class="comparison-copy">
+              <p class="eyebrow">Сравнение сценариев</p>
+              <h3>Как старт влияет на итоговый капитал</h3>
+              <p>
+                На одном горизонте видно разницу между стартом сейчас, простым накоплением и сценариями с паузой.
+              </p>
+            </div>
+            <div class="comparison-badge">
+              <span>Потеря из-за паузы</span>
+              <strong id="waitingCost">$0</strong>
+              <small id="waitingCostLabel">если отложить старт на 3 года</small>
+            </div>
+          </div>
+
+          <div class="chart-card" aria-labelledby="comparisonChartTitle">
+            <div class="chart-head">
+              <div class="chart-copy">
+                <p class="chart-kicker">График сценариев</p>
+                <h3 id="comparisonChartTitle">Рост капитала по одной траектории взносов</h3>
+                <p>Во всех линиях одинаковые стартовая сумма, пополнения и срок. Меняется только момент старта и наличие доходности.</p>
+              </div>
+              <div class="chart-value">
+                <span>Финал при старте сейчас</span>
+                <strong id="chartFinalNow">$0</strong>
+              </div>
+            </div>
+
+            <div class="chart-wrap">
+              <svg id="comparisonChart" class="comparison-chart" viewBox="0 0 760 420" role="img" aria-label="Сравнение сценариев накопления капитала">
+                <defs>
+                  <linearGradient id="chartAreaGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#42E572" stop-opacity="0.22"></stop>
+                    <stop offset="100%" stop-color="#42E572" stop-opacity="0"></stop>
+                  </linearGradient>
+                </defs>
+                <g id="chartGrid"></g>
+                <g id="chartAxes"></g>
+                <path id="chartArea" class="chart-area"></path>
+                <g id="chartSeries"></g>
+                <g id="chartPoints"></g>
+                <g id="chartLabels"></g>
+              </svg>
+            </div>
+
+            <div class="chart-legend" id="chartLegend" aria-label="Легенда графика"></div>
+          </div>
+
+          <div class="insights-grid">
+            <article class="insight-card insight-card-primary">
+              <span>Инвестировать сейчас</span>
+              <strong id="insightNow">$0</strong>
+              <p id="insightNowText">Базовый сценарий на выбранном горизонте.</p>
+            </article>
+            <article class="insight-card">
+              <span>Без доходности</span>
+              <strong id="insightCash">$0</strong>
+              <p id="insightCashText">Если только откладывать и не инвестировать.</p>
+            </article>
+            <article class="insight-card">
+              <span>Старт через 2 года</span>
+              <strong id="insightDelay2">$0</strong>
+              <p id="insightDelay2Text">Цена двухлетней паузы.</p>
+            </article>
+            <article class="insight-card">
+              <span>Старт через 3 года</span>
+              <strong id="insightDelay3">$0</strong>
+              <p id="insightDelay3Text">Цена трёхлетней паузы.</p>
+            </article>
+          </div>
+
+          <div class="insight-note" id="insightSummary"></div>
+
           <div class="breakdown-head">
-            <h3>Динамика по годам</h3>
-            <p>Простой ориентир по накоплению капитала.</p>
+            <h3>Портфель по годам</h3>
+            <p>Короткий ориентир по взносам, росту и итоговой стоимости.</p>
           </div>
           <div class="table-wrap">
             <table>
@@ -130,6 +203,6 @@
     </section>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=20260314-2"></script>
 </body>
 </html>
