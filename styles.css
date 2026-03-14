@@ -743,20 +743,18 @@ tbody tr:last-child td {
   }
 
   .chart-wrap {
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     padding-bottom: 4px;
     margin: 0 0 14px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(17, 24, 39, 0.24) transparent;
   }
 
   .comparison-chart {
-    min-width: 560px;
+    min-width: 0;
+    width: 100%;
   }
 
   .chart-axis-label {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .chart-end-label {
@@ -850,7 +848,7 @@ tbody tr:last-child td {
   }
 
   .comparison-chart {
-    min-width: 520px;
+    min-width: 0;
   }
 
   table {
