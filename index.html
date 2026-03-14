@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HetmanInvest | Калькулятор сложного процента</title>
+  <meta name="description" content="Статический калькулятор сложного процента HetmanInvest с ежемесячными пополнениями и сценариями роста.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="brand-chip">HetmanInvest</div>
+      <div class="hero-copy">
+        <p class="eyebrow">Сложный процент без лишнего шума</p>
+        <h1>Посмотрите, как капитал растёт при регулярных инвестициях</h1>
+        <p class="hero-text">
+          Настройте стартовую сумму, ежемесячные пополнения и ожидаемую доходность, чтобы быстро оценить долгосрочный результат.
+        </p>
+      </div>
+      <div class="hero-glow" aria-hidden="true"></div>
+    </header>
+
+    <main class="calculator-layout">
+      <section class="panel panel-form">
+        <div class="panel-head">
+          <h2>Параметры расчёта</h2>
+          <p>Изменения применяются сразу, без кнопки расчёта.</p>
+        </div>
+
+        <div class="scenario-group" aria-label="Быстрые сценарии">
+          <button class="scenario-btn active" type="button" data-scenario="base">Базовый</button>
+          <button class="scenario-btn" type="button" data-scenario="conservative">Консервативный</button>
+          <button class="scenario-btn" type="button" data-scenario="aggressive">Агрессивный</button>
+        </div>
+
+        <form class="input-grid" id="calculator-form">
+          <label class="field">
+            <span>Стартовая сумма, $</span>
+            <input id="initialAmount" name="initialAmount" type="number" min="0" step="100" value="10000">
+          </label>
+
+          <label class="field">
+            <span>Ежемесячное пополнение, $</span>
+            <input id="monthlyContribution" name="monthlyContribution" type="number" min="0" step="50" value="500">
+          </label>
+
+          <label class="field">
+            <span>Ожидаемая доходность, % годовых</span>
+            <input id="annualRate" name="annualRate" type="number" min="0" max="100" step="0.1" value="8.5">
+          </label>
+
+          <label class="field">
+            <span>Срок, лет</span>
+            <input id="years" name="years" type="number" min="1" max="50" step="1" value="15">
+          </label>
+
+          <label class="field field-wide">
+            <span>Момент пополнения</span>
+            <select id="contributionTiming" name="contributionTiming">
+              <option value="end">В конце месяца</option>
+              <option value="beginning">В начале месяца</option>
+            </select>
+          </label>
+        </form>
+
+        <p class="note">
+          Расчёты носят иллюстративный характер и не являются инвестиционной рекомендацией.
+        </p>
+      </section>
+
+      <section class="panel panel-results">
+        <div class="panel-head">
+          <h2>Итог по портфелю</h2>
+          <p>Оценка результата на выбранном горизонте.</p>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card featured">
+            <span>Финальная стоимость</span>
+            <strong id="finalValue">$0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Всего внесено</span>
+            <strong id="totalContributed">$0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Заработанный рост</span>
+            <strong id="totalGrowth">$0</strong>
+          </article>
+        </div>
+
+        <div class="breakdown-card">
+          <div class="breakdown-head">
+            <h3>Динамика по годам</h3>
+            <p>Простой ориентир по накоплению капитала.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Год</th>
+                  <th>Взносы</th>
+                  <th>Рост</th>
+                  <th>Портфель</th>
+                </tr>
+              </thead>
+              <tbody id="yearlyBreakdown"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <section class="cta-panel">
+      <div>
+        <p class="eyebrow">Следующий шаг</p>
+        <h2>Обсудите стратегию с HetmanInvest или подпишитесь на обновления</h2>
+        <p>
+          Если хотите адаптировать расчёт под ваши цели, оставьте контакт и получите персональную консультацию или дайджест идей по рынку.
+        </p>
+      </div>
+      <div class="cta-actions">
+        <a class="cta-btn cta-primary" href="mailto:hello@hetmaninvest.com?subject=%D0%9A%D0%BE%D0%BD%D1%81%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%86%D0%B8%D1%8F%20HetmanInvest">Запросить консультацию</a>
+        <a class="cta-btn cta-secondary" href="mailto:hello@hetmaninvest.com?subject=%D0%9F%D0%BE%D0%B4%D0%BF%D0%B8%D1%81%D0%BA%D0%B0%20HetmanInvest">Подписаться на рассылку</a>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
