@@ -312,7 +312,7 @@ function renderChart(seriesResults, totalYears, options = {}) {
       y: y + 4,
       class: "chart-axis-label chart-axis-label-y",
     });
-    label.textContent = formatAxisCurrency(value, !isCompactViewport);
+    label.textContent = formatCompactCurrency(value);
     axesNode.appendChild(label);
   }
 
