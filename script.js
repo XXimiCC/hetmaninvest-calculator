@@ -45,6 +45,8 @@ const chartModal = document.getElementById("chartModal");
 const openChartModalButton = document.getElementById("openChartModal");
 const closeChartModalButton = document.getElementById("closeChartModal");
 const closeChartModalBackdrop = document.getElementById("closeChartModalBackdrop");
+const chartWrap = document.querySelector(".chart-wrap");
+const comparisonChart = document.getElementById("comparisonChart");
 
 const scenarios = {
   conservative: {
@@ -81,7 +83,7 @@ const chartConfig = {
   mobile: {
     width: 430,
     height: 320,
-    padding: { top: 20, right: 14, bottom: 42, left: 58 },
+    padding: { top: 20, right: 14, bottom: 42, left: 74 },
     yTicks: 4,
     xTicks: 4,
   },
@@ -308,7 +310,7 @@ function renderChart(seriesResults, totalYears, options = {}) {
     gridNode.appendChild(gridLine);
 
     const label = createSvgNode("text", {
-      x: padding.left - 14,
+      x: isCompactViewport ? padding.left - 10 : padding.left - 14,
       y: y + 4,
       class: "chart-axis-label chart-axis-label-y",
     });
@@ -532,6 +534,8 @@ form.addEventListener("input", () => {
 
 window.addEventListener("resize", recalculate);
 openChartModalButton.addEventListener("click", openChartModal);
+chartWrap.addEventListener("click", openChartModal);
+comparisonChart.style.cursor = "zoom-in";
 closeChartModalButton.addEventListener("click", closeChartModal);
 closeChartModalBackdrop.addEventListener("click", closeChartModal);
 document.addEventListener("keydown", (event) => {
