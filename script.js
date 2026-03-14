@@ -350,6 +350,8 @@ function renderChart(seriesResults, totalYears, options = {}) {
     )
   );
 
+  const shouldPlaceLabelsInside = isCompactViewport || forceDesktop;
+
   seriesResults.forEach((series, index) => {
     const points = series.monthlySeries.map((point) => ({
       x: xScale(point.year),
@@ -391,13 +393,15 @@ function renderChart(seriesResults, totalYears, options = {}) {
     const labelGroup = createSvgNode("g", {
       class: "chart-end-label-group",
     });
-    const labelOffsetY = isCompactViewport ? -10 + index * 18 : -14 + index * 22;
+    const labelOffsetY = shouldPlaceLabelsInside
+      ? (isCompactViewport ? -10 + index * 18 : -14 + index * 22)
+      : -14 + index * 22;
     const text = createSvgNode("text", {
-      x: isCompactViewport ? finalPoint.x - 14 : finalPoint.x - 8,
+      x: shouldPlaceLabelsInside ? finalPoint.x - 14 : finalPoint.x - 8,
       y: finalPoint.y + labelOffsetY,
       class: "chart-end-label",
       fill: series.color,
-      "text-anchor": isCompactViewport ? "end" : "start",
+      "text-anchor": shouldPlaceLabelsInside ? "end" : "start",
     });
     text.textContent = isCompactViewport
       ? {
