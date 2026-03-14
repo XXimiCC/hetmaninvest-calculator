@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260314-5">
+  <link rel="stylesheet" href="styles.css?v=20260314-6">
 </head>
 <body>
   <div class="page-shell">
@@ -110,6 +110,9 @@
           </div>
 
           <div class="chart-card" aria-labelledby="comparisonChartTitle">
+            <button class="chart-expand-btn" id="openChartModal" type="button" aria-label="Открыть график крупнее">
+              Открыть крупно
+            </button>
             <div class="chart-head">
               <div class="chart-copy">
                 <p class="chart-kicker">График сценариев</p>
@@ -203,6 +206,36 @@
     </section>
   </div>
 
-  <script src="script.js?v=20260314-5"></script>
+  <div class="chart-modal" id="chartModal" aria-hidden="true">
+    <div class="chart-modal-backdrop" id="closeChartModalBackdrop"></div>
+    <div class="chart-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="chartModalTitle">
+      <div class="chart-modal-head">
+        <div>
+          <p class="chart-kicker">Увеличенный просмотр</p>
+          <h3 id="chartModalTitle">График сценариев</h3>
+        </div>
+        <button class="chart-modal-close" id="closeChartModal" type="button" aria-label="Закрыть увеличенный график">✕</button>
+      </div>
+      <div class="chart-modal-wrap">
+        <svg id="comparisonChartModal" class="comparison-chart comparison-chart-modal" viewBox="0 0 980 560" role="img" aria-label="Увеличенный график сценариев накопления капитала">
+          <defs>
+            <linearGradient id="chartAreaGradientModal" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#42E572" stop-opacity="0.22"></stop>
+              <stop offset="100%" stop-color="#42E572" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+          <g id="chartGridModal"></g>
+          <g id="chartAxesModal"></g>
+          <path id="chartAreaModal" class="chart-area"></path>
+          <g id="chartSeriesModal"></g>
+          <g id="chartPointsModal"></g>
+          <g id="chartLabelsModal"></g>
+        </svg>
+      </div>
+      <div class="chart-legend" id="chartLegendModal" aria-label="Легенда увеличенного графика"></div>
+    </div>
+  </div>
+
+  <script src="script.js?v=20260314-6"></script>
 </body>
 </html>

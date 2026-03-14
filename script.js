@@ -22,6 +22,13 @@ const outputs = {
   chartSeries: document.getElementById("chartSeries"),
   chartPoints: document.getElementById("chartPoints"),
   chartLabels: document.getElementById("chartLabels"),
+  chartLegendModal: document.getElementById("chartLegendModal"),
+  chartGridModal: document.getElementById("chartGridModal"),
+  chartAxesModal: document.getElementById("chartAxesModal"),
+  chartAreaModal: document.getElementById("chartAreaModal"),
+  chartSeriesModal: document.getElementById("chartSeriesModal"),
+  chartPointsModal: document.getElementById("chartPointsModal"),
+  chartLabelsModal: document.getElementById("chartLabelsModal"),
   insightNow: document.getElementById("insightNow"),
   insightCash: document.getElementById("insightCash"),
   insightDelay2: document.getElementById("insightDelay2"),
@@ -34,6 +41,10 @@ const outputs = {
 };
 
 const scenarioButtons = document.querySelectorAll(".scenario-btn");
+const chartModal = document.getElementById("chartModal");
+const openChartModalButton = document.getElementById("openChartModal");
+const closeChartModalButton = document.getElementById("closeChartModal");
+const closeChartModalBackdrop = document.getElementById("closeChartModalBackdrop");
 
 const scenarios = {
   conservative: {
@@ -249,22 +260,34 @@ function getAreaPath(points, baselineY) {
   return `${linePath} L ${lastPoint.x.toFixed(2)} ${baselineY.toFixed(2)} L ${firstPoint.x.toFixed(2)} ${baselineY.toFixed(2)} Z`;
 }
 
-function clearChart() {
-  [outputs.chartGrid, outputs.chartAxes, outputs.chartSeries, outputs.chartPoints, outputs.chartLabels].forEach((node) => {
+function clearChart(nodes) {
+  nodes.forEach((node) => {
     node.innerHTML = "";
   });
 }
 
-function renderChart(seriesResults, totalYears) {
-  clearChart();
+function renderChart(seriesResults, totalYears, options = {}) {
+  const {
+    svgId = "comparisonChart",
+    gridNode = outputs.chartGrid,
+    axesNode = outputs.chartAxes,
+    areaNode = outputs.chartArea,
+    seriesNode = outputs.chartSeries,
+    pointsNode = outputs.chartPoints,
+    labelsNode = outputs.chartLabels,
+    legendNode = outputs.chartLegend,
+    forceDesktop = false,
+  } = options;
 
-  const isCompactViewport = window.innerWidth <= 640;
-  const config = isCompactViewport ? chartConfig.mobile : chartConfig.desktop;
+  clearChart([gridNode, axesNode, seriesNode, pointsNode, labelsNode]);
+
+  const isCompactViewport = !forceDesktop && window.innerWidth <= 640;
+  const config = forceDesktop ? chartConfig.desktop : (isCompactViewport ? chartConfig.mobile : chartConfig.desktop);
   const { width, height, padding, xTicks, yTicks } = config;
   const chartWidth = width - padding.left - padding.right;
   const chartHeight = height - padding.top - padding.bottom;
 
-  const svg = document.getElementById("comparisonChart");
+  const svg = document.getElementById(svgId);
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   const maxValue = Math.max(...seriesResults.flatMap((series) => series.monthlySeries.map((point) => point.balance)));
   const safeMaxValue = maxValue <= 0 ? 1 : maxValue;
@@ -282,7 +305,7 @@ function renderChart(seriesResults, totalYears) {
       y2: y,
       class: "chart-grid-line",
     });
-    outputs.chartGrid.appendChild(gridLine);
+    gridNode.appendChild(gridLine);
 
     const label = createSvgNode("text", {
       x: padding.left - 14,
@@ -290,7 +313,7 @@ function renderChart(seriesResults, totalYears) {
       class: "chart-axis-label chart-axis-label-y",
     });
     label.textContent = formatAxisCurrency(value, !isCompactViewport);
-    outputs.chartAxes.appendChild(label);
+    axesNode.appendChild(label);
   }
 
   for (let tick = 0; tick <= xTicks; tick += 1) {
@@ -303,7 +326,7 @@ function renderChart(seriesResults, totalYears) {
       y2: height - padding.bottom,
       class: "chart-grid-line chart-grid-line-vertical",
     });
-    outputs.chartGrid.appendChild(gridLine);
+    gridNode.appendChild(gridLine);
 
     const label = createSvgNode("text", {
       x,
@@ -311,10 +334,10 @@ function renderChart(seriesResults, totalYears) {
       class: "chart-axis-label chart-axis-label-x",
     });
     label.textContent = `${Math.round(year)} г.`;
-    outputs.chartAxes.appendChild(label);
+    axesNode.appendChild(label);
   }
 
-  outputs.chartArea.setAttribute(
+  areaNode.setAttribute(
     "d",
     getAreaPath(
       seriesResults[0].monthlySeries.map((point) => ({
@@ -342,7 +365,7 @@ function renderChart(seriesResults, totalYears) {
       "stroke-dasharray": series.dasharray,
       class: `chart-series-line chart-series-line-${series.key}`,
     });
-    outputs.chartSeries.appendChild(path);
+    seriesNode.appendChild(path);
 
     const pointHalo = createSvgNode("circle", {
       cx: finalPoint.x,
@@ -352,7 +375,7 @@ function renderChart(seriesResults, totalYears) {
       opacity: index === 0 ? "0.16" : "0.12",
       class: "chart-final-halo",
     });
-    outputs.chartPoints.appendChild(pointHalo);
+    pointsNode.appendChild(pointHalo);
 
     const point = createSvgNode("circle", {
       cx: finalPoint.x,
@@ -361,7 +384,7 @@ function renderChart(seriesResults, totalYears) {
       fill: series.color,
       class: "chart-final-point",
     });
-    outputs.chartPoints.appendChild(point);
+    pointsNode.appendChild(point);
 
     const labelGroup = createSvgNode("g", {
       class: "chart-end-label-group",
@@ -383,12 +406,12 @@ function renderChart(seriesResults, totalYears) {
         }[series.key] || series.shortLabel
       : series.shortLabel;
     labelGroup.appendChild(text);
-    outputs.chartLabels.appendChild(labelGroup);
+    labelsNode.appendChild(labelGroup);
   });
 }
 
-function renderLegend(seriesResults) {
-  outputs.chartLegend.innerHTML = seriesResults
+function renderLegend(seriesResults, legendNode = outputs.chartLegend) {
+  legendNode.innerHTML = seriesResults
     .map(
       (series) => `
         <div class="legend-item">
@@ -401,6 +424,18 @@ function renderLegend(seriesResults) {
       `
     )
     .join("");
+}
+
+function openChartModal() {
+  chartModal.classList.add("is-open");
+  chartModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+
+function closeChartModal() {
+  chartModal.classList.remove("is-open");
+  chartModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
 }
 
 function renderInsights(seriesResults) {
@@ -464,7 +499,18 @@ function recalculate() {
 
   renderBreakdown(result.yearlyRows);
   renderChart(comparisonResults, data.years);
-  renderLegend(comparisonResults);
+  renderLegend(comparisonResults, outputs.chartLegend);
+  renderChart(comparisonResults, data.years, {
+    svgId: "comparisonChartModal",
+    gridNode: outputs.chartGridModal,
+    axesNode: outputs.chartAxesModal,
+    areaNode: outputs.chartAreaModal,
+    seriesNode: outputs.chartSeriesModal,
+    pointsNode: outputs.chartPointsModal,
+    labelsNode: outputs.chartLabelsModal,
+    forceDesktop: true,
+  });
+  renderLegend(comparisonResults, outputs.chartLegendModal);
   renderInsights(comparisonResults);
 }
 
@@ -485,5 +531,13 @@ form.addEventListener("input", () => {
 });
 
 window.addEventListener("resize", recalculate);
+openChartModalButton.addEventListener("click", openChartModal);
+closeChartModalButton.addEventListener("click", closeChartModal);
+closeChartModalBackdrop.addEventListener("click", closeChartModal);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && chartModal.classList.contains("is-open")) {
+    closeChartModal();
+  }
+});
 
 recalculate();
